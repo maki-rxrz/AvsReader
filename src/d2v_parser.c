@@ -279,7 +279,7 @@ static void *parse(LPSTR input)
     gop_count = 0;
     frame_count = 0;
     flags = 0x00;
-    int enable_rff = !!(info->setting.field_operation == 0);
+    int enable_rff = (info->setting.field_operation == 0);
     int repeat_pict_count = 0;
     int rff_count = 0;
     int rff = 0;
@@ -307,9 +307,9 @@ static void *parse(LPSTR input)
             flags = strtol(flags_str, NULL, 16);
             if (flags == 0xFF)
                 break;
-            info->data.frames[frame_count].ref_prev_gop = !(flags & 0x80);
+            info->data.frames[frame_count].ref_prev_gop =  !(flags & 0x80);
             info->data.frames[frame_count].progr        = !!(flags & 0x40);
-            info->data.frames[frame_count].keyframe     = !!((flags & 0x30) == 0x10);
+            info->data.frames[frame_count].keyframe     =  ((flags & 0x30) == 0x10);
             info->data.frames[frame_count].tff          = !!(flags & 0x02);
             info->data.frames[frame_count].rff          = !!(flags & 0x01);
             info->data.frames[frame_count].gop_num      = gop_count;
@@ -354,7 +354,7 @@ static uint8_t *create_keyframe_list(void *h)
         return NULL;
 
     /* check RFF. */
-    int enable_rff = !!(info->setting.field_operation == 0);
+    int enable_rff = (info->setting.field_operation == 0);
 
     /* check total frames. */
     int total_frames = info->order_total_frames;
